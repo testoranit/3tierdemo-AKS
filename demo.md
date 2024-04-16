@@ -156,11 +156,30 @@ Managed Grafana	Azure Managed Grafana workspace	Link your Grafana workspace to y
 
 az aks show --resource-group ecomm-demo --name three-tier-cluster --query "identity.type"
 CHeck the cluster Identity
+az extension list --query "[?name=='k8s-extension']"
+check k8s-extension.
 
 and execute az aks update --enable-azure-monitor-metrics -n three-tier-cluster -g ecomm-demo
 
 output:-
 vm-admin@tomcat-vm:~$ az aks update --enable-azure-monitor-metrics -n three-tier-cluster -g ecomm-demo
+
+(options:-
+
+
+### Use default Azure Monitor workspace
+az aks create/update --enable-azure-monitor-metrics -n <cluster-name> -g <cluster-resource-group>
+
+### Use existing Azure Monitor workspace
+az aks create/update --enable-azure-monitor-metrics -n <cluster-name> -g <cluster-resource-group> --azure-monitor-workspace-resource-id <workspace-name-resource-id>
+
+### Use an existing Azure Monitor workspace and link with an existing Grafana workspace
+az aks create/update --enable-azure-monitor-metrics -n <cluster-name> -g <cluster-resource-group> --azure-monitor-workspace-resource-id <azure-monitor-workspace-name-resource-id> --grafana-resource-id  <grafana-workspace-name-resource-id>
+
+### Use optional parameters
+az aks create/update --enable-azure-monitor-metrics -n <cluster-name> -g <cluster-resource-group> --ksm-metric-labels-allow-list "namespaces=[k8s-label-1,k8s-label-n]" --ksm-metric-annotations-allow-list "pods=[k8s-annotation-1,k8s-annotation-n]")
+
+
 Using Azure Monitor Workspace (stores prometheus metrics) : /subscriptions/5b8ab9e9-05ae-4317-80d9-873b9c409693/resourceGroups/DefaultResourceGroup-westus2/providers/microsoft.monitor/accounts/DefaultAzureMonitorWorkspace-westus2
 {
   "aadProfile": null,
@@ -409,5 +428,52 @@ Using Azure Monitor Workspace (stores prometheus metrics) : /subscriptions/5b8ab
   }
 }
 vm-admin@tomcat-vm:~$
+
+
+
+
+
+Enable COntainer Insights.
+
+### Use default Log Analytics workspace
+az aks enable-addons -a monitoring -n <cluster-name> -g <cluster-resource-group-name>
+
+### Use existing Log Analytics workspace
+az aks enable-addons -a monitoring -n three-tier-cluster -g ecomm-demo --workspace-resource-id /subscriptions/5b8ab9e9-05ae-4317-80d9-873b9c409693/resourceGroups/tomcat-iaas-12-2020/providers/Microsoft.OperationalInsights/workspaces/sampletest
+
+
+
+
+
+Verify deployment
+kubectl get ds ama-metrics-node --namespace=kube-system
+
+Verify that the two ReplicaSets were deployed for Prometheus
+kubectl get rs --namespace=kube-system
+
+Container insights
+Verify that the DaemonSets were deployed properly on the Linux node pools
+User@aksuser:~$ kubectl get ds ama-logs --namespace=kube-system
+NAME       DESIRED   CURRENT   READY     UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+ama-logs   2         2         2         2            2           <none>          1d
+Verify deployment of the Container insights solution
+kubectl get deployment ama-logs-rs --namespace=kube-system
+
+View configuration with CLI
+
+Use the aks show command to find out whether the solution is enabled, the Log Analytics workspace resource ID, and summary information about the cluster
+
+az aks show -g ecomm-demo -n three-tier-cluster
+
+
+![after enabling container insights](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/f123dbdf-5c85-487e-94b1-80b7d3d45df5)
+
+![Container Insighta](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/51bc27f5-ab5d-467e-9ce1-fb2ba642d043)
+
+Promethus
+https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/prometheus-workbooks#troubleshooting
+Grafanas
+
+https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/grafana-plugin
 
 
