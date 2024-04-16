@@ -70,6 +70,10 @@ ingressClassName:azure application ateway
 kubectl apply -f ingress.yaml -n robot-shop
 kubectl get pods -A | grep ingress-app
 
+If u don't see Application gateay Enable Ingress in Networking then
+https://learn.microsoft.com/en-us/azure/application-gateway/tutorial-ingress-controller-add-on-existing
+and then u can use inrees..
+
 
 Gen:- check with dev tem on how to star the pp and include in in Dockerfile in cmd
 
