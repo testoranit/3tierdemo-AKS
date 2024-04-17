@@ -477,3 +477,28 @@ Grafanas
 https://learn.microsoft.com/en-us/azure/azure-monitor/visualize/grafana-plugin
 
 
+U should have Monitor read access to ur Azure Monitor workspace
+go to Azure monitor workspace-->IAM-->assign read role.
+
+![prometheus-explorer-menu](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/ee1be991-d821-469b-a459-da46bb7dfa17)
+
+![platform metrics](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/f4eee80c-67cc-4fb1-a365-f5404f30d8bb)
+
+![prometheus-query](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/102c68cd-4608-4817-b226-a350154e3324)
+
+![prometheus-workspace-add-query](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/ab0832e2-8002-42a2-a9ef-1ef188635f31)
+
+![prometheus-query-workbook](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/52104663-3984-4d71-b072-297aa1ef3c41)
+
+Azure Managed Grafana includes an Azure Monitor data source plug-in. By default
+
+Build a Grafana dashboard
+Go to the Grafana home page and select New Dashboard.
+
+In the new dashboard, select Graph. You can try other charting options, but this article uses Graph as an example.
+
+A blank graph shows up on your dashboard. Select the panel title and select Edit to enter the details of the data you want to plot in this graph chart.
+
+Run geqry in the grafana dashboard
+avg(rate(node_cpu_seconds_total{mode="user"}[10m]))
+![Grafana dashboard](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/0e017719-0009-45e8-92ed-01c5b10fe624)
