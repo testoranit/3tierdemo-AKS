@@ -502,3 +502,53 @@ A blank graph shows up on your dashboard. Select the panel title and select Edit
 Run geqry in the grafana dashboard
 avg(rate(node_cpu_seconds_total{mode="user"}[10m]))
 ![Grafana dashboard](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/0e017719-0009-45e8-92ed-01c5b10fe624)
+
+**************Gen
+Levels of Monitoring:-
+CLuster level monitoring
+Pod Level monitoring(resource utlilization of pods,application metrics,& metrics related to replication or autoscaling of the pod)
+
+K8s Monitoring tool:- by defualt doesn't have monitoring
+1)Promethus
+2)Grafana
+3)Jagear
+4)Kubernetes dashboad
+5)kalili
+6)Kubewatch
+
+![monitoring layers](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/ef3e580b-c1e2-4fed-abf5-1c40c57c8ccd)
+
+![FLow of monitoring](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/31751a9e-bef0-4018-8d40-53679351d495)
+
+
+Node level metrics:_ perfm of each nodes,avail,cpu consumption
+Pod level metrics:- same as above
+use heapster project as a reference for K8s monitoring.
+
+vm-admin@tomcat-vm:~$ kubectl top node
+NAME                                CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
+aks-agentpool-20519794-vmss000004   217m         11%    3582Mi          78%
+aks-agentpool-20519794-vmss000005   231m         12%    2934Mi          64%
+vm-admin@tomcat-vm:~$
+
+vm-admin@tomcat-vm:~$ kubectl top pod -n robot-shop
+NAME                         CPU(cores)   MEMORY(bytes)
+cart-64c54bd6d7-28q2n        1m           28Mi
+catalogue-577d55dcc8-jdtqp   1m           34Mi
+dispatch-886d77bc8-tqf6w     4m           24Mi
+mongodb-7474db6fdf-sgz68     4m           161Mi
+mysql-5fb849d788-hfvmz       1m           236Mi
+payment-6cc6b544db-6vmnp     1m           36Mi
+
+In docker u can use docker logs -f con_id to view the logs of container
+In K8s
+kubectl logs -f pod -n robot-shop
+
+
+PromQL:-
+Scenario:- Check Pods in Pending state:-
+kube_pod_status_phase{namespace="<your_namespace>", phase="Pending"}
+
+
+
+Metric server is installed in kubesystem namespace
