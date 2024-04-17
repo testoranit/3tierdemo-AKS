@@ -552,3 +552,34 @@ kube_pod_status_phase{namespace="<your_namespace>", phase="Pending"}
 
 
 Metric server is installed in kubesystem namespace
+
+get pods -n kube-system | grep metrics
+ama-metrics-64664898b8-5bvlt                    2/2     Running   0            9h
+ama-metrics-ksm-d9c6f475b-k497l                 1/1     Running   1 (9h ago)   9h
+ama-metrics-node-lghmn                          2/2     Running   1 (9h ago)   9h
+ama-metrics-node-z2twf                          2/2     Running   0            9h
+ama-metrics-operator-targets-68df4f4784-87t5j   2/2     Running   2 (9h ago)   9h
+metrics-server-5f476446c6-plbd6                 2/2     Running   0            23h
+metrics-server-5f476446c6-tb7k5                 2/2     Running   0            23h
+vm-admin@tomcat-vm:~$
+
+
+**get compoent status ok K8S cluster
+kubectl get componentstatus
+
+If u want to collect data based on CPu
+kubectl get pods --all-namespace --sort-by cpu > cpu_uti.txt
+
+******
+Logging
+Application logs:_ to identify what is hapening inside app
+
+Logs should have a sepearte storage and a lifecycle of independent of nodes,pods,or containers.This is called cluster-level logging.
+
+![logging pipeline](https://github.com/testoranit/3tierdemo-AKS/assets/124513439/5f133126-3fdb-4db7-b56e-7169bd6ca38c)
+
+Once logs are collected from Data source then use aggragtor like Fluentd and store it in logstorage like Elastic Search.
+and Visualize using kibana/Grafana.
+
+use this course for above notes:-
+https://tcsglobal.udemy.com/course/certified-kubernetes-application-developer-training/learn/lecture/31046868#overview
