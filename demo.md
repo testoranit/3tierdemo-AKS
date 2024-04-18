@@ -583,3 +583,87 @@ and Visualize using kibana/Grafana.
 
 use this course for above notes:-
 https://tcsglobal.udemy.com/course/certified-kubernetes-application-developer-training/learn/lecture/31046868#overview
+
+**Loggig and debugging
+If it's not Managed K8s and u have ur own K8s cluster below log components could be helpful.
+API server is the acces point of the cluster (all calls go through it)
+u can put log aggregator here.
+
+2)scheduller:-element that determines where to run the containers.logging and debuging is necessary
+
+3)etcd:- db (logging & debugging is also required here)
+
+if u have done K8s instalaltion using kubeadm
+u can execute kubectl logs above_component(etcd db) -n kube-system 
+
+On-prem installation not done using kubeadm
+then do,
+journalctl -u kube-apiserver(in linux only)
+or get logs from /var/log/kube-apiserver.log or /var/log/continer/*
+
+
+****Logging using sidecar
+Application generates logs and stores a specific loc, then u use sidecar to read these los.
+Sidecar pattern:- pod with multiple con's where 1 pod(app) generates some logs to a location and other pods reads those logs from those loc)
+
+gen:- kubectl logs pod-name -n robot-shop
+
+
+****Application failures
+Troubleshooting guide:-
+to list all pods in all namespaces and check status=Running
+
+kubectl get pods --all-namespaces
+
+if u r getting problem in any of the pod
+kubectl describe pod podname
+if u status is Running then app inside that pod is running.
+but
+if status=pending then
+Reason:_ not enough resources
+so either delete existing pods or add a new worker node.
+
+if status=waiting then
+reason:- incorrect image name or image name that u specify doesn't present in ur repo.
+
+******************Troubleshoot K8s Cluster failures
+kubectl get nodes
+kubectl describe node nod_name
+
+complete cluster info
+kubectl cluster-info or kubectl cluster-info dump
+
+kubectl get component-status
+
+Troubleshooting Service:-
+in Kubeadm
+Kubectl get pods -n kube-system
+
+systemctl start kubelet
+systemctl enable kubelet
+
+systemctl start docker
+systemctl enble docker
+
+2)Manual Installaiton:-
+systemctl deamon-reload
+systemctl start kubelet
+systemctl enable kubelet
+
+systemctl start docker
+systemctl enble docker
+
+Troubleshooting Cluetr worker node
+kubectl get nodes
+
+Possible failure reasons:-
+1)memory issue
+2)network unvailaity
+3)kubelet failure
+4)CPU utlization
+5)process failure
+
+kubectl describe node node-name
+
+
+
